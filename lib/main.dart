@@ -506,12 +506,12 @@ class _VideoScreenshotPageState extends State<VideoScreenshotPage> {
             children: [
               Text('Start: ${(_trimStart * 100).toStringAsFixed(0)}%'),
               Slider(
-                value: _trimStart,
+                value: _trimStart.clamp(0.0, (_trimEnd - 0.05).clamp(0.0, 1.0)),
                 min: 0.0,
-                max: _trimEnd - 0.05,
+                max: (_trimEnd - 0.05).clamp(0.0, 1.0),
                 onChanged: (value) {
                   setState(() {
-                    _trimStart = value;
+                    _trimStart = value.clamp(0.0, (_trimEnd - 0.05).clamp(0.0, 1.0));
                   });
                   this.setState(() {});
                 },
@@ -519,12 +519,12 @@ class _VideoScreenshotPageState extends State<VideoScreenshotPage> {
               const SizedBox(height: 16),
               Text('End: ${(_trimEnd * 100).toStringAsFixed(0)}%'),
               Slider(
-                value: _trimEnd,
-                min: _trimStart + 0.05,
+                value: _trimEnd.clamp((_trimStart + 0.05).clamp(0.0, 1.0), 1.0),
+                min: (_trimStart + 0.05).clamp(0.0, 1.0),
                 max: 1.0,
                 onChanged: (value) {
                   setState(() {
-                    _trimEnd = value;
+                    _trimEnd = value.clamp((_trimStart + 0.05).clamp(0.0, 1.0), 1.0);
                   });
                   this.setState(() {});
                 },
@@ -547,6 +547,14 @@ class _VideoScreenshotPageState extends State<VideoScreenshotPage> {
             onPressed: () {
               setState(() {
                 _trimMode = true;
+                // Adjust current position if outside trim range
+                if (_currentPosition < _trimStart) {
+                  _currentPosition = _trimStart;
+                  _seekToPosition(_trimStart);
+                } else if (_currentPosition > _trimEnd) {
+                  _currentPosition = _trimEnd;
+                  _seekToPosition(_trimEnd);
+                }
               });
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
@@ -995,7 +1003,10 @@ class _VideoScreenshotPageState extends State<VideoScreenshotPage> {
                           overlayColor: const Color(0xFF4A90E2).withOpacity(0.2),
                         ),
                         child: Slider(
-                          value: _currentPosition,
+                          value: _currentPosition.clamp(
+                            _trimMode ? _trimStart : 0.0,
+                            _trimMode ? _trimEnd : 1.0,
+                          ),
                           min: _trimMode ? _trimStart : 0.0,
                           max: _trimMode ? _trimEnd : 1.0,
                           onChanged: (value) {
