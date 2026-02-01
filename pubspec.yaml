@@ -1,0 +1,44 @@
+name: video_screenshot_app
+description: A simple cross-platform app to capture video frames as JPG images
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Video player with frame control
+  video_player: ^2.8.2
+
+  # File picking for video selection
+  file_picker: ^6.1.1
+
+  # Image gallery saving
+  image_gallery_saver: ^2.0.3
+
+  # Path provider for file handling
+  path_provider: ^2.1.2
+
+  # Permission handling
+  permission_handler: ^11.2.0
+
+  # Screenshot/frame capture
+  screenshot: ^2.3.0
+
+  # Image processing and filters
+  image: ^4.1.7
+
+  # Share functionality
+  share_plus: ^7.2.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
