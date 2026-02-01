@@ -84,6 +84,11 @@ class _VideoScreenshotPageState extends State<VideoScreenshotPage> {
   double _trimEnd = 1.0;
   bool _trimMode = false;
 
+  // GIF creation
+  double _gifStart = 0.0;
+  double _gifEnd = 0.2; // Default 20% of video
+  bool _isCreatingGif = false;
+
   @override
   void dispose() {
     _controller?.dispose();
@@ -570,6 +575,301 @@ class _VideoScreenshotPageState extends State<VideoScreenshotPage> {
     );
   }
 
+  void _showGifCreatorDialog() {
+    if (_controller == null || !_controller!.value.isInitialized) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please load a video first')),
+      );
+      return;
+    }
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Row(
+          children: [
+            Icon(Icons.gif_box, color: Color(0xFF4A90E2)),
+            SizedBox(width: 8),
+            Text('Create GIF'),
+          ],
+        ),
+        content: StatefulBuilder(
+          builder: (context, setState) => Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Select the video range for your GIF',
+                style: TextStyle(fontSize: 14),
+              ),
+              const SizedBox(height: 20),
+              // iOS-style range selector
+              Container(
+                height: 60,
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Stack(
+                  children: [
+                    // Selected range overlay
+                    Positioned(
+                      left: _gifStart * MediaQuery.of(context).size.width * 0.6,
+                      width: (_gifEnd - _gifStart) * MediaQuery.of(context).size.width * 0.6,
+                      top: 0,
+                      bottom: 0,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: const Color(0xFFF4C430), // Yellow
+                            width: 3,
+                          ),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF4C430).withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(3),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Start: ${(_gifStart * _controller!.value.duration.inSeconds).toStringAsFixed(1)}s',
+                    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+                  ),
+                  Text(
+                    'End: ${(_gifEnd * _controller!.value.duration.inSeconds).toStringAsFixed(1)}s',
+                    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Duration: ${((_gifEnd - _gifStart) * _controller!.value.duration.inSeconds).toStringAsFixed(1)}s',
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                      color: (_gifEnd - _gifStart) * _controller!.value.duration.inSeconds > 5
+                          ? Colors.orange
+                          : Colors.green,
+                    ),
+                  ),
+                  Text(
+                    '~${(((_gifEnd - _gifStart) * _controller!.value.duration.inSeconds) * 10).toInt()} frames',
+                    style: const TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              const Divider(),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  const Icon(Icons.start, size: 16, color: Color(0xFF4A90E2)),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Slider(
+                      value: _gifStart.clamp(0.0, (_gifEnd - 0.1).clamp(0.0, 1.0)),
+                      min: 0.0,
+                      max: (_gifEnd - 0.1).clamp(0.0, 1.0),
+                      activeColor: const Color(0xFFF4C430),
+                      onChanged: (value) {
+                        setState(() {
+                          _gifStart = value.clamp(0.0, (_gifEnd - 0.1).clamp(0.0, 1.0));
+                        });
+                        this.setState(() {});
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  const Icon(Icons.stop, size: 16, color: Color(0xFF4A90E2)),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Slider(
+                      value: _gifEnd.clamp((_gifStart + 0.1).clamp(0.0, 1.0), 1.0),
+                      min: (_gifStart + 0.1).clamp(0.0, 1.0),
+                      max: 1.0,
+                      activeColor: const Color(0xFFF4C430),
+                      onChanged: (value) {
+                        setState(() {
+                          _gifEnd = value.clamp((_gifStart + 0.1).clamp(0.0, 1.0), 1.0);
+                        });
+                        this.setState(() {});
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              if ((_gifEnd - _gifStart) * _controller!.value.duration.inSeconds > 5)
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.orange.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: Colors.orange, width: 1),
+                  ),
+                  child: const Row(
+                    children: [
+                      Icon(Icons.warning_amber, size: 16, color: Colors.orange),
+                      SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          'Long GIFs may take time to create and result in large files',
+                          style: TextStyle(fontSize: 11, color: Colors.orange),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.pop(context);
+              _createGif();
+            },
+            icon: const Icon(Icons.gif_box),
+            label: const Text('Create GIF'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF4A90E2),
+              foregroundColor: Colors.white,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _createGif() async {
+    if (_controller == null || !_controller!.value.isInitialized) return;
+
+    setState(() {
+      _isCreatingGif = true;
+    });
+
+    try {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Row(
+            children: [
+              CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+              SizedBox(width: 16),
+              Text('Creating GIF... This may take a moment'),
+            ],
+          ),
+          duration: Duration(seconds: 30),
+        ),
+      );
+
+      final duration = _controller!.value.duration;
+      final startTime = duration * _gifStart;
+      final endTime = duration * _gifEnd;
+      final frameDuration = const Duration(milliseconds: 100); // 10 fps
+
+      List<img.Image> frames = [];
+
+      // Capture frames
+      for (var time = startTime; time <= endTime; time += frameDuration) {
+        await _controller!.seekTo(time);
+        await Future.delayed(const Duration(milliseconds: 100)); // Wait for frame to load
+
+        final boundary = _videoKey.currentContext?.findRenderObject() as RenderRepaintBoundary?;
+        if (boundary != null) {
+          final image = await boundary.toImage(pixelRatio: 0.5); // Lower resolution for GIF
+          final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+          if (byteData != null) {
+            final pngBytes = byteData.buffer.asUint8List();
+            final decodedImage = img.decodeImage(pngBytes);
+            if (decodedImage != null) {
+              frames.add(decodedImage);
+            }
+          }
+        }
+
+        if (frames.length >= 50) break; // Limit to 50 frames max
+      }
+
+      if (frames.isEmpty) {
+        throw Exception('No frames captured');
+      }
+
+      // Create animated GIF
+      final gif = img.GifEncoder();
+
+      for (var frame in frames) {
+        gif.addFrame(frame, duration: 10); // 100ms per frame = 10fps
+      }
+
+      final gifData = gif.finish();
+      if (gifData == null || gifData.isEmpty) {
+        throw Exception('Failed to encode GIF');
+      }
+
+      // Save GIF to gallery
+      final result = await ImageGallerySaver.saveImage(
+        Uint8List.fromList(gifData),
+        quality: 100,
+        name: 'framio_gif_${DateTime.now().millisecondsSinceEpoch}',
+        isReturnImagePathOfIOS: true,
+      );
+
+      setState(() {
+        _isCreatingGif = false;
+      });
+
+      if (result['isSuccess'] == true || result['filePath'] != null) {
+        final sizeInMB = (gifData.length / 1024 / 1024).toStringAsFixed(2);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                const Icon(Icons.check_circle, color: Colors.white),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text('GIF created! ${frames.length} frames, $sizeInMB MB'),
+                ),
+              ],
+            ),
+            backgroundColor: Colors.green,
+            duration: const Duration(seconds: 4),
+          ),
+        );
+      } else {
+        throw Exception('Failed to save GIF to gallery');
+      }
+    } catch (e) {
+      setState(() {
+        _isCreatingGif = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error creating GIF: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
   String _formatDuration(Duration duration) {
     String twoDigits(int n) => n.toString().padLeft(2, '0');
     final hours = twoDigits(duration.inHours);
@@ -640,11 +940,7 @@ class _VideoScreenshotPageState extends State<VideoScreenshotPage> {
                 if (value == 'share') {
                   _shareScreenshot();
                 } else if (value == 'gif') {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('GIF creation coming soon! Select multiple frames in batch mode.'),
-                    ),
-                  );
+                  _showGifCreatorDialog();
                 }
               },
               itemBuilder: (context) => [
