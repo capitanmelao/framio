@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:file_picker/file_picker.dart';
@@ -22,10 +23,24 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Framio',
+      debugShowCheckedModeBanner: false, // Remove DEBUG banner
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF4A90E2),
+          brightness: Brightness.light,
+        ),
         useMaterial3: true,
+        scaffoldBackgroundColor: Colors.white,
       ),
+      darkTheme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF4A90E2),
+          brightness: Brightness.dark,
+        ),
+        useMaterial3: true,
+        scaffoldBackgroundColor: Colors.black,
+      ),
+      themeMode: ThemeMode.system, // Adapt to system theme
       home: const VideoScreenshotPage(),
     );
   }
@@ -561,10 +576,40 @@ class _VideoScreenshotPageState extends State<VideoScreenshotPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Framio'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        flexibleSpace: ClipRRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+            child: Container(
+              decoration: BoxDecoration(
+                color: isDark
+                  ? Colors.black.withOpacity(0.3)
+                  : Colors.white.withOpacity(0.3),
+                border: Border(
+                  bottom: BorderSide(
+                    color: isDark
+                      ? Colors.white.withOpacity(0.1)
+                      : Colors.black.withOpacity(0.1),
+                    width: 0.5,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        title: Text(
+          'Framio',
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            color: isDark ? Colors.white : Colors.black87,
+          ),
+        ),
         actions: [
           if (_controller != null && _controller!.value.isInitialized) ...[
             IconButton(
@@ -622,52 +667,140 @@ class _VideoScreenshotPageState extends State<VideoScreenshotPage> {
       ),
       body: Column(
         children: [
-          // Status bar
+          // Status bars with glassmorphism
           if (_batchMode)
-            Container(
-              padding: const EdgeInsets.all(8),
-              color: Colors.deepPurple.shade100,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Batch Mode: ${_selectedFrames.length} frames selected',
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  if (_selectedFrames.isNotEmpty)
-                    ElevatedButton.icon(
-                      onPressed: _exportBatch,
-                      icon: const Icon(Icons.download, size: 16),
-                      label: const Text('Export All'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            ClipRRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: isDark
+                      ? const Color(0xFF6366F1).withOpacity(0.2)
+                      : const Color(0xFF6366F1).withOpacity(0.15),
+                    border: Border(
+                      bottom: BorderSide(
+                        color: const Color(0xFF6366F1).withOpacity(0.3),
+                        width: 1,
                       ),
                     ),
-                ],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.collections,
+                            size: 18,
+                            color: isDark ? Colors.white : Colors.black87,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            '${_selectedFrames.length} frames selected',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: isDark ? Colors.white : Colors.black87,
+                            ),
+                          ),
+                        ],
+                      ),
+                      if (_selectedFrames.isNotEmpty)
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF10B981).withOpacity(0.8),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  onTap: _exportBatch,
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: const Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(Icons.download, size: 16, color: Colors.white),
+                                        SizedBox(width: 6),
+                                        Text(
+                                          'Export All',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
               ),
             ),
           if (_selectedFilter != FilterType.none)
-            Container(
-              padding: const EdgeInsets.all(8),
-              color: Colors.orange.shade100,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Filter: ${_selectedFilter.toString().split('.').last.toUpperCase()}',
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+            ClipRRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: isDark
+                      ? const Color(0xFFF59E0B).withOpacity(0.2)
+                      : const Color(0xFFF59E0B).withOpacity(0.15),
+                    border: Border(
+                      bottom: BorderSide(
+                        color: const Color(0xFFF59E0B).withOpacity(0.3),
+                        width: 1,
+                      ),
+                    ),
                   ),
-                  TextButton(
-                    onPressed: () {
-                      setState(() {
-                        _selectedFilter = FilterType.none;
-                      });
-                    },
-                    child: const Text('Clear Filter'),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.filter_vintage,
+                            size: 18,
+                            color: isDark ? Colors.white : Colors.black87,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            _selectedFilter.toString().split('.').last.toUpperCase(),
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: isDark ? Colors.white : Colors.black87,
+                            ),
+                          ),
+                        ],
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          setState(() {
+                            _selectedFilter = FilterType.none;
+                          });
+                        },
+                        child: Text(
+                          'Clear',
+                          style: TextStyle(
+                            color: isDark ? Colors.white : Colors.black87,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           Expanded(
@@ -710,170 +843,386 @@ class _VideoScreenshotPageState extends State<VideoScreenshotPage> {
                         ),
             ),
           ),
-          // Frame navigation controls
+          // Frame navigation controls with glassmorphism
           if (_controller != null && _controller!.value.isInitialized)
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              color: Colors.grey[200],
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.skip_previous),
-                    onPressed: _previousFrame,
-                    tooltip: 'Previous Frame',
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      _controller!.value.isPlaying ? Icons.pause : Icons.play_arrow,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        if (_controller!.value.isPlaying) {
-                          _controller!.pause();
-                        } else {
-                          _controller!.play();
-                        }
-                      });
-                    },
-                    tooltip: 'Play/Pause',
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.skip_next),
-                    onPressed: _nextFrame,
-                    tooltip: 'Next Frame',
-                  ),
-                  if (_batchMode)
-                    IconButton(
-                      icon: Icon(
-                        _selectedFrames.contains(_currentPosition)
-                            ? Icons.bookmark
-                            : Icons.bookmark_border,
-                        color: _selectedFrames.contains(_currentPosition)
-                            ? Colors.deepPurple
-                            : null,
+            ClipRRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  decoration: BoxDecoration(
+                    color: isDark
+                      ? Colors.black.withOpacity(0.3)
+                      : Colors.white.withOpacity(0.5),
+                    border: Border(
+                      top: BorderSide(
+                        color: isDark
+                          ? Colors.white.withOpacity(0.1)
+                          : Colors.black.withOpacity(0.1),
+                        width: 0.5,
                       ),
-                      onPressed: _addFrameToBatch,
-                      tooltip: 'Add to Batch',
                     ),
-                ],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          Icons.skip_previous_rounded,
+                          color: isDark ? Colors.white : Colors.black87,
+                        ),
+                        onPressed: _previousFrame,
+                        tooltip: 'Previous Frame',
+                      ),
+                      const SizedBox(width: 8),
+                      Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: LinearGradient(
+                            colors: [
+                              const Color(0xFF4A90E2),
+                              const Color(0xFF4A90E2).withOpacity(0.8),
+                            ],
+                          ),
+                        ),
+                        child: IconButton(
+                          icon: Icon(
+                            _controller!.value.isPlaying
+                              ? Icons.pause_rounded
+                              : Icons.play_arrow_rounded,
+                            color: Colors.white,
+                            size: 28,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              if (_controller!.value.isPlaying) {
+                                _controller!.pause();
+                              } else {
+                                _controller!.play();
+                              }
+                            });
+                          },
+                          tooltip: 'Play/Pause',
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      IconButton(
+                        icon: Icon(
+                          Icons.skip_next_rounded,
+                          color: isDark ? Colors.white : Colors.black87,
+                        ),
+                        onPressed: _nextFrame,
+                        tooltip: 'Next Frame',
+                      ),
+                      if (_batchMode) ...[
+                        const SizedBox(width: 16),
+                        Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: _selectedFrames.contains(_currentPosition)
+                              ? const Color(0xFF6366F1)
+                              : Colors.transparent,
+                            border: Border.all(
+                              color: const Color(0xFF6366F1),
+                              width: 2,
+                            ),
+                          ),
+                          child: IconButton(
+                            icon: Icon(
+                              _selectedFrames.contains(_currentPosition)
+                                  ? Icons.bookmark_rounded
+                                  : Icons.bookmark_border_rounded,
+                              color: _selectedFrames.contains(_currentPosition)
+                                  ? Colors.white
+                                  : const Color(0xFF6366F1),
+                            ),
+                            onPressed: _addFrameToBatch,
+                            tooltip: 'Add to Batch',
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
               ),
             ),
           if (_controller != null && _controller!.value.isInitialized)
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              color: Colors.grey[100],
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            ClipRRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  decoration: BoxDecoration(
+                    color: isDark
+                      ? Colors.black.withOpacity(0.3)
+                      : Colors.white.withOpacity(0.5),
+                  ),
+                  child: Column(
                     children: [
-                      Text(
-                        _formatDuration(
-                          _controller!.value.duration * _currentPosition,
-                        ),
-                        style: const TextStyle(fontSize: 14),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            _formatDuration(
+                              _controller!.value.duration * _currentPosition,
+                            ),
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                              color: isDark ? Colors.white70 : Colors.black54,
+                            ),
+                          ),
+                          Text(
+                            _formatDuration(_controller!.value.duration),
+                            style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                              color: isDark ? Colors.white70 : Colors.black54,
+                            ),
+                          ),
+                        ],
                       ),
-                      Text(
-                        _formatDuration(_controller!.value.duration),
-                        style: const TextStyle(fontSize: 14),
+                      SliderTheme(
+                        data: SliderThemeData(
+                          trackHeight: 3,
+                          thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8),
+                          overlayShape: const RoundSliderOverlayShape(overlayRadius: 16),
+                          activeTrackColor: const Color(0xFF4A90E2),
+                          inactiveTrackColor: isDark
+                            ? Colors.white.withOpacity(0.2)
+                            : Colors.black.withOpacity(0.1),
+                          thumbColor: const Color(0xFF4A90E2),
+                          overlayColor: const Color(0xFF4A90E2).withOpacity(0.2),
+                        ),
+                        child: Slider(
+                          value: _currentPosition,
+                          min: _trimMode ? _trimStart : 0.0,
+                          max: _trimMode ? _trimEnd : 1.0,
+                          onChanged: (value) {
+                            _seekToPosition(value);
+                          },
+                        ),
                       ),
                     ],
                   ),
-                  Slider(
-                    value: _currentPosition,
-                    min: _trimMode ? _trimStart : 0.0,
-                    max: _trimMode ? _trimEnd : 1.0,
-                    onChanged: (value) {
-                      _seekToPosition(value);
-                    },
-                  ),
-                ],
+                ),
               ),
             ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            color: Colors.grey[50],
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          ClipRRect(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                decoration: BoxDecoration(
+                  color: isDark
+                    ? Colors.black.withOpacity(0.3)
+                    : Colors.white.withOpacity(0.5),
+                  border: Border(
+                    top: BorderSide(
+                      color: isDark
+                        ? Colors.white.withOpacity(0.1)
+                        : Colors.black.withOpacity(0.1),
+                      width: 0.5,
+                    ),
+                  ),
+                ),
+                child: Column(
                   children: [
-                    const Text(
-                      'Image Quality:',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Image Quality:',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: isDark ? Colors.white : Colors.black87,
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: _imageQuality >= 90
+                                ? const Color(0xFF10B981).withOpacity(0.2)
+                                : _imageQuality >= 70
+                                    ? const Color(0xFFF59E0B).withOpacity(0.2)
+                                    : const Color(0xFFEF4444).withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text(
+                            '${_imageQuality}%',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: _imageQuality >= 90
+                                  ? const Color(0xFF10B981)
+                                  : _imageQuality >= 70
+                                      ? const Color(0xFFF59E0B)
+                                      : const Color(0xFFEF4444),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SliderTheme(
+                      data: SliderThemeData(
+                        trackHeight: 3,
+                        thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8),
+                        overlayShape: const RoundSliderOverlayShape(overlayRadius: 16),
+                        activeTrackColor: _imageQuality >= 90
+                            ? const Color(0xFF10B981)
+                            : _imageQuality >= 70
+                                ? const Color(0xFFF59E0B)
+                                : const Color(0xFFEF4444),
+                        inactiveTrackColor: isDark
+                          ? Colors.white.withOpacity(0.2)
+                          : Colors.black.withOpacity(0.1),
+                        thumbColor: _imageQuality >= 90
+                            ? const Color(0xFF10B981)
+                            : _imageQuality >= 70
+                                ? const Color(0xFFF59E0B)
+                                : const Color(0xFFEF4444),
+                        overlayColor: (_imageQuality >= 90
+                            ? const Color(0xFF10B981)
+                            : _imageQuality >= 70
+                                ? const Color(0xFFF59E0B)
+                                : const Color(0xFFEF4444)).withOpacity(0.2),
+                      ),
+                      child: Slider(
+                        value: _imageQuality.toDouble(),
+                        min: 30,
+                        max: 100,
+                        divisions: 70,
+                        label: '$_imageQuality%',
+                        onChanged: (value) {
+                          setState(() {
+                            _imageQuality = value.round();
+                          });
+                        },
                       ),
                     ),
                     Text(
-                      '${_imageQuality}%',
+                      _imageQuality >= 90
+                          ? 'High Quality (Large file)'
+                          : _imageQuality >= 70
+                              ? 'Medium Quality (Balanced)'
+                              : 'Low Quality (Small file)',
                       style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: _imageQuality >= 90
-                            ? Colors.green
-                            : _imageQuality >= 70
-                                ? Colors.orange
-                                : Colors.red,
+                        fontSize: 12,
+                        color: isDark ? Colors.white60 : Colors.black54,
                       ),
                     ),
                   ],
                 ),
-                Slider(
-                  value: _imageQuality.toDouble(),
-                  min: 30,
-                  max: 100,
-                  divisions: 70,
-                  label: '$_imageQuality%',
-                  onChanged: (value) {
-                    setState(() {
-                      _imageQuality = value.round();
-                    });
-                  },
-                ),
-                Text(
-                  _imageQuality >= 90
-                      ? 'High Quality (Large file)'
-                      : _imageQuality >= 70
-                          ? 'Medium Quality (Balanced)'
-                          : 'Low Quality (Small file)',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey[600],
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(20.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Expanded(
-                  child: ElevatedButton.icon(
-                    onPressed: _pickVideo,
-                    icon: const Icon(Icons.video_library),
-                    label: const Text('Load Video'),
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              const Color(0xFF4A90E2).withOpacity(0.8),
+                              const Color(0xFF4A90E2).withOpacity(0.6),
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: Colors.white.withOpacity(0.2),
+                            width: 1.5,
+                          ),
+                        ),
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            onTap: _pickVideo,
+                            borderRadius: BorderRadius.circular(16),
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 16),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.video_library_rounded, color: Colors.white),
+                                  SizedBox(width: 8),
+                                  Text(
+                                    'Load Video',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
                 const SizedBox(width: 16),
                 Expanded(
-                  child: ElevatedButton.icon(
-                    onPressed: _controller != null &&
-                            _controller!.value.isInitialized
-                        ? _saveScreenshot
-                        : null,
-                    icon: const Icon(Icons.camera_alt),
-                    label: const Text('Save Frame'),
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      backgroundColor: Colors.deepPurple,
-                      foregroundColor: Colors.white,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: _controller != null && _controller!.value.isInitialized
+                              ? [
+                                  const Color(0xFF6366F1).withOpacity(0.8),
+                                  const Color(0xFF8B5CF6).withOpacity(0.6),
+                                ]
+                              : [
+                                  Colors.grey.withOpacity(0.3),
+                                  Colors.grey.withOpacity(0.2),
+                                ],
+                          ),
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: Colors.white.withOpacity(0.2),
+                            width: 1.5,
+                          ),
+                        ),
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            onTap: _controller != null && _controller!.value.isInitialized
+                                ? _saveScreenshot
+                                : null,
+                            borderRadius: BorderRadius.circular(16),
+                            child: const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 16),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.camera_alt_rounded, color: Colors.white),
+                                  SizedBox(width: 8),
+                                  Text(
+                                    'Save Frame',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
