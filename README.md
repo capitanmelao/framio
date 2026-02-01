@@ -54,8 +54,8 @@ Extract, edit, and share perfect moments from any video with advanced filters an
 
 1. **Clone the repository:**
 ```bash
-git clone https://github.com/capitanmelao/video_screenshot_app.git
-cd video_screenshot_app
+git clone https://github.com/capitanmelao/framio.git
+cd framio
 ```
 
 2. **Install dependencies:**
@@ -195,7 +195,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## 📞 Support
 
 For issues, questions, or feature requests:
-- 🐛 [Open an issue](https://github.com/capitanmelao/video_screenshot_app/issues)
+- 🐛 [Open an issue](https://github.com/capitanmelao/framio/issues)
 - 📧 Email: leinso@gmail.com
 
 ---
@@ -216,6 +216,6 @@ For issues, questions, or feature requests:
 
 **Made with ❤️ using Flutter**
 
-[⭐ Star this repo](https://github.com/capitanmelao/video_screenshot_app) if you find it useful!
+[⭐ Star this repo](https://github.com/capitanmelao/framio) if you find it useful!
 
 </div>

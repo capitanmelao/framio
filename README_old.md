@@ -46,8 +46,8 @@ A professional Flutter app for iOS and Android that extracts, edits, and shares 
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/capitanmelao/video_screenshot_app.git
-cd video_screenshot_app
+git clone https://github.com/capitanmelao/framio.git
+cd framio
 ```
 
 2. Install dependencies:
@@ -113,7 +113,7 @@ flutter run
 ## 📦 Project Structure
 
 ```
-video_screenshot_app/
+framio/
 ├── lib/
 │   ├── main.dart              # Main app with all features
 │   └── main_backup.dart       # Original simple version

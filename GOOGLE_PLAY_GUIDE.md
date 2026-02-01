@@ -39,7 +39,7 @@ El archivo ya está configurado con el nombre "Framio" ✅
 **Importante:** Guarda este archivo para siempre. Lo necesitarás para todas las actualizaciones.
 
 ```bash
-cd /Users/carlos/App/video_screenshot_app/android
+cd /Users/carlos/App/framio/android
 
 # Crear keystore
 keytool -genkey -v -keystore ~/framio-release-key.jks \
@@ -113,7 +113,7 @@ buildTypes {
 ### Opción A: App Bundle (Recomendado - más pequeño)
 
 ```bash
-cd /Users/carlos/App/video_screenshot_app
+cd /Users/carlos/App/framio
 
 # Asegúrate de tener Flutter en el PATH
 export PATH="$HOME/flutter/bin:$PATH"

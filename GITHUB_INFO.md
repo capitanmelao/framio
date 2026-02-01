@@ -2,7 +2,7 @@
 
 ## ✅ Successfully Published!
 
-**Repository URL:** https://github.com/capitanmelao/video_screenshot_app
+**Repository URL:** https://github.com/capitanmelao/framio
 
 Your Video Screenshot Pro app is now live on GitHub with all premium features!
 
@@ -65,10 +65,10 @@ These tags help people discover your app on GitHub!
 
 ## 🔗 Quick Links:
 
-- **View on GitHub:** https://github.com/capitanmelao/video_screenshot_app
-- **Clone:** `git clone https://github.com/capitanmelao/video_screenshot_app.git`
-- **Issues:** https://github.com/capitanmelao/video_screenshot_app/issues
-- **Settings:** https://github.com/capitanmelao/video_screenshot_app/settings
+- **View on GitHub:** https://github.com/capitanmelao/framio
+- **Clone:** `git clone https://github.com/capitanmelao/framio.git`
+- **Issues:** https://github.com/capitanmelao/framio/issues
+- **Settings:** https://github.com/capitanmelao/framio/settings
 
 ---
 
@@ -84,8 +84,8 @@ These tags help people discover your app on GitHub!
 ### For Development:
 1. **Clone on other machines:**
    ```bash
-   git clone https://github.com/capitanmelao/video_screenshot_app.git
-   cd video_screenshot_app
+   git clone https://github.com/capitanmelao/framio.git
+   cd framio
    flutter pub get
    ```
 
@@ -124,7 +124,7 @@ Video Screenshot Pro - Extract, edit & share video frames
 ✂️ Video trimming
 
 Built with Flutter for iOS & Android
-https://github.com/capitanmelao/video_screenshot_app
+https://github.com/capitanmelao/framio
 ```
 
 ---
@@ -205,7 +205,7 @@ GitHub provides insights:
 - **Stars:** People who like your project
 - **Forks:** Others building on your work
 
-Access at: https://github.com/capitanmelao/video_screenshot_app/insights
+Access at: https://github.com/capitanmelao/framio/insights
 
 ---
 
@@ -231,7 +231,7 @@ Your professional Flutter app is now:
 - ✅ Portfolio-ready
 - ✅ Easily deployable anywhere
 
-**Repository:** https://github.com/capitanmelao/video_screenshot_app
+**Repository:** https://github.com/capitanmelao/framio
 
 You can now work on this project from any computer, collaborate with others, and showcase your work to potential employers or clients! 🚀
 
@@ -241,7 +241,7 @@ You can now work on this project from any computer, collaborate with others, and
 
 ```bash
 # View your repo
-gh repo view capitanmelao/video_screenshot_app --web
+gh repo view capitanmelao/framio --web
 
 # Check status
 git status

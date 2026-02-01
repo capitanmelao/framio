@@ -34,7 +34,7 @@ I've already opened Xcode for you. Now:
 Once the download completes:
 
 ```bash
-cd /Users/carlos/App/video_screenshot_app
+cd /Users/carlos/App/framio
 export PATH="$HOME/flutter/bin:$PATH"
 flutter devices
 ```
@@ -56,7 +56,7 @@ Select your iPhone from the device list.
 While waiting for Xcode to download support files, you can test the app immediately on your Mac:
 
 ```bash
-cd /Users/carlos/App/video_screenshot_app
+cd /Users/carlos/App/framio
 export PATH="$HOME/flutter/bin:$PATH"
 flutter run -d macos
 ```
@@ -91,7 +91,7 @@ Before running on iPhone, make sure:
 
 **Option B - Test Immediately (On Mac):**
 ```bash
-cd /Users/carlos/App/video_screenshot_app
+cd /Users/carlos/App/framio
 export PATH="$HOME/flutter/bin:$PATH"
 flutter run -d macos
 ```

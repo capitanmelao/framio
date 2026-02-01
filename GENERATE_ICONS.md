@@ -16,7 +16,7 @@ Guarda el logo que me enviaste (el amarillo y azul con el círculo blanco) como:
 
 ### 2. Ejecuta el Comando
 ```bash
-cd /Users/carlos/App/video_screenshot_app
+cd /Users/carlos/App/framio
 flutter pub run flutter_launcher_icons
 ```
 
@@ -31,7 +31,7 @@ El comando generará automáticamente:
 ## 🚀 Comando Completo (Copia y pega)
 
 ```bash
-cd /Users/carlos/App/video_screenshot_app
+cd /Users/carlos/App/framio
 
 # Asegúrate que el logo esté en: assets/icon/framio_icon.png
 
@@ -208,7 +208,7 @@ Cuando termines, tendrás:
 **Después de poner tu logo en `assets/icon/framio_icon.png`, ejecuta:**
 
 ```bash
-cd /Users/carlos/App/video_screenshot_app
+cd /Users/carlos/App/framio
 export PATH="$HOME/flutter/bin:$PATH"
 flutter pub run flutter_launcher_icons
 flutter clean

@@ -31,7 +31,7 @@ https://developer.apple.com/programs/enroll/
 ### A. Verifica que Xcode esté configurado
 
 ```bash
-cd /Users/carlos/App/video_screenshot_app
+cd /Users/carlos/App/framio
 
 # Abre el workspace en Xcode
 open ios/Runner.xcworkspace
@@ -63,7 +63,7 @@ Ya está configurado como "Framio" ✅
 ### Desde Terminal:
 
 ```bash
-cd /Users/carlos/App/video_screenshot_app
+cd /Users/carlos/App/framio
 
 # Asegúrate de tener Flutter en el PATH
 export PATH="$HOME/flutter/bin:$PATH"

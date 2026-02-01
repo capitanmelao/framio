@@ -30,7 +30,7 @@ I've already opened Xcode for you. Now follow these steps:
 Once the download completes, close Xcode Settings and run:
 
 ```bash
-cd /Users/carlos/App/video_screenshot_app
+cd /Users/carlos/App/framio
 ./run_app.sh
 ```
 
@@ -43,7 +43,7 @@ Your iPhone should now work! 🎉
 While waiting for the iOS platform to download, you can test the full app on your Mac:
 
 ```bash
-cd /Users/carlos/App/video_screenshot_app
+cd /Users/carlos/App/framio
 export PATH="$HOME/flutter/bin:$PATH"
 flutter run -d macos
 ```
@@ -65,14 +65,14 @@ flutter run -d macos
 
 **While waiting:**
 ```bash
-cd /Users/carlos/App/video_screenshot_app
+cd /Users/carlos/App/framio
 export PATH="$HOME/flutter/bin:$PATH"
 flutter run -d macos
 ```
 
 **After download:**
 ```bash
-cd /Users/carlos/App/video_screenshot_app
+cd /Users/carlos/App/framio
 ./run_app.sh
 ```
 Select your iPhone and enjoy! 📱
@@ -84,7 +84,7 @@ Select your iPhone and enjoy! 📱
 If you don't want to wait, you can also test on the iOS Simulator:
 
 ```bash
-cd /Users/carlos/App/video_screenshot_app
+cd /Users/carlos/App/framio
 export PATH="$HOME/flutter/bin:$PATH"
 flutter run -d "iPhone 17 Pro"
 ```

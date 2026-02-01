@@ -1,4 +1,4 @@
-package com.videoscreenshot.video_screenshot_app
+package com.capitanmelao.framio
 
 import io.flutter.embedding.android.FlutterActivity
 

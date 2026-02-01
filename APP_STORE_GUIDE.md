@@ -88,7 +88,7 @@ Required screenshots:
 ### Step 2: Build Release Version
 
 ```bash
-cd /Users/carlos/App/video_screenshot_app
+cd /Users/carlos/App/framio
 
 # Build for release
 flutter build ios --release

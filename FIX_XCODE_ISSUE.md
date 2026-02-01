@@ -23,7 +23,7 @@ Your iPhone is running iOS 26.2.1, but Xcode needs device support files to deplo
 
 6. Once complete, close Xcode and try running the app again:
    ```bash
-   cd /Users/carlos/App/video_screenshot_app
+   cd /Users/carlos/App/framio
    ./run_app.sh
    ```
 
@@ -41,7 +41,7 @@ Your iPhone is running iOS 26.2.1, but Xcode needs device support files to deplo
 You can test the app RIGHT NOW using the iOS Simulator:
 
 ```bash
-cd /Users/carlos/App/video_screenshot_app
+cd /Users/carlos/App/framio
 export PATH="$HOME/flutter/bin:$PATH"
 flutter run -d "iPhone 17 Pro"
 ```
@@ -61,7 +61,7 @@ flutter run
 Test the full app functionality on your Mac:
 
 ```bash
-cd /Users/carlos/App/video_screenshot_app
+cd /Users/carlos/App/framio
 export PATH="$HOME/flutter/bin:$PATH"
 flutter run -d macos
 ```
@@ -75,7 +75,7 @@ You can load actual video files from your Mac and test all features!
 ### For Quick Testing (Right Now):
 **Use macOS Desktop** - Full functionality, no setup needed:
 ```bash
-cd /Users/carlos/App/video_screenshot_app
+cd /Users/carlos/App/framio
 ./run_app.sh
 ```
 Then select **macOS** from the device list.
@@ -92,21 +92,21 @@ Then select **macOS** from the device list.
 
 ### Run on macOS:
 ```bash
-cd /Users/carlos/App/video_screenshot_app
+cd /Users/carlos/App/framio
 export PATH="$HOME/flutter/bin:$PATH"
 flutter run -d macos
 ```
 
 ### Run on iOS Simulator:
 ```bash
-cd /Users/carlos/App/video_screenshot_app
+cd /Users/carlos/App/framio
 export PATH="$HOME/flutter/bin:$PATH"
 flutter run -d "iPhone 17 Pro"
 ```
 
 ### Run on Physical iPhone (after Xcode downloads support files):
 ```bash
-cd /Users/carlos/App/video_screenshot_app
+cd /Users/carlos/App/framio
 ./run_app.sh
 ```
 
@@ -116,7 +116,7 @@ cd /Users/carlos/App/video_screenshot_app
 
 To see all available devices:
 ```bash
-cd /Users/carlos/App/video_screenshot_app
+cd /Users/carlos/App/framio
 export PATH="$HOME/flutter/bin:$PATH"
 flutter devices
 ```

@@ -37,7 +37,7 @@ Tu app ahora se llama **Framio** y tiene tu icono profesional con el diseño ama
 
 ### 6. **GitHub** ✅
 - Todo subido y actualizado
-- https://github.com/capitanmelao/video_screenshot_app
+- https://github.com/capitanmelao/framio
 - Nuevo commit con rebrand
 
 ---
@@ -64,7 +64,7 @@ Tu app ahora se llama **Framio** y tiene tu icono profesional con el diseño ama
 
 ### Opción 1: Simulador iOS (Rápido)
 ```bash
-cd /Users/carlos/App/video_screenshot_app
+cd /Users/carlos/App/framio
 export PATH="$HOME/flutter/bin:$PATH"
 flutter clean
 flutter run
@@ -122,7 +122,7 @@ $4.99 (justificado por las 7 features premium)
 ## 📁 Archivos Importantes:
 
 ```
-video_screenshot_app/
+framio/
 ├── assets/
 │   └── icon/
 │       └── framio_icon.png          ← Tu logo original
@@ -243,8 +243,8 @@ Has creado **Framio**, una app profesional de edición de frames de video con:
 
 ## 🔗 Links Importantes:
 
-- **GitHub:** https://github.com/capitanmelao/video_screenshot_app
-- **Código Local:** /Users/carlos/App/video_screenshot_app
+- **GitHub:** https://github.com/capitanmelao/framio
+- **Código Local:** /Users/carlos/App/framio
 - **Guía de Marca:** FRAMIO_BRANDING.md
 - **Guía App Store:** APP_STORE_GUIDE.md
 
@@ -253,7 +253,7 @@ Has creado **Framio**, una app profesional de edición de frames de video con:
 ## 📞 Soporte:
 
 - **Email:** leinso@gmail.com
-- **GitHub Issues:** https://github.com/capitanmelao/video_screenshot_app/issues
+- **GitHub Issues:** https://github.com/capitanmelao/framio/issues
 
 ---
 

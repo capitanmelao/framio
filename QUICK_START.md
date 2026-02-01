@@ -20,7 +20,7 @@ Your iPhone is detected! Just need one quick setup step:
 
 ### Then Run the App:
 ```bash
-cd /Users/carlos/App/video_screenshot_app
+cd /Users/carlos/App/framio
 ./run_app.sh
 ```
 
@@ -33,7 +33,7 @@ When prompted, select your iPhone from the list!
 You can test the app RIGHT NOW on your Mac:
 
 ```bash
-cd /Users/carlos/App/video_screenshot_app
+cd /Users/carlos/App/framio
 ./run_app.sh
 ```
 
@@ -44,7 +44,7 @@ When prompted, select **macOS** from the device list.
 ## 🌐 Running in Chrome Browser
 
 ```bash
-cd /Users/carlos/App/video_screenshot_app
+cd /Users/carlos/App/framio
 export PATH="$HOME/flutter/bin:$PATH"
 flutter run -d chrome
 ```
@@ -102,7 +102,7 @@ Or restart your terminal window.
 The app is ready to use. Try it on your Mac right now with:
 
 ```bash
-cd /Users/carlos/App/video_screenshot_app
+cd /Users/carlos/App/framio
 ./run_app.sh
 ```
 

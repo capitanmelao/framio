@@ -28,7 +28,7 @@ Before you begin, ensure you have the following installed:
 
 1. Navigate to the project directory:
 ```bash
-cd video_screenshot_app
+cd framio
 ```
 
 2. Install dependencies:
@@ -174,7 +174,7 @@ The app requires the following permissions:
 ## Project Structure
 
 ```
-video_screenshot_app/
+framio/
 ├── lib/
 │   └── main.dart          # Main application code
 ├── android/               # Android-specific configuration

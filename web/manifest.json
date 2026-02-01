@@ -1,6 +1,6 @@
 {
-    "name": "video_screenshot_app",
-    "short_name": "video_screenshot_app",
+    "name": "framio",
+    "short_name": "framio",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

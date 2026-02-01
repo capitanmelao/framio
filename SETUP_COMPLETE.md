@@ -15,7 +15,7 @@ Close your current terminal and open a new one. Flutter will be available automa
 
 Then you can use Flutter commands directly:
 ```bash
-cd /Users/carlos/App/video_screenshot_app
+cd /Users/carlos/App/framio
 flutter run
 ```
 
@@ -33,7 +33,7 @@ flutter run
 ### Option 3: Use the Helper Script (Works Immediately)
 You can use the provided script right now without any additional setup:
 ```bash
-cd /Users/carlos/App/video_screenshot_app
+cd /Users/carlos/App/framio
 ./run_app.sh
 ```
 
@@ -77,7 +77,7 @@ Available devices right now:
 
 ```bash
 # Go to project directory
-cd /Users/carlos/App/video_screenshot_app
+cd /Users/carlos/App/framio
 
 # Run app
 ./run_app.sh
@@ -100,7 +100,7 @@ flutter doctor
 You can test the app immediately on your Mac:
 
 ```bash
-cd /Users/carlos/App/video_screenshot_app
+cd /Users/carlos/App/framio
 ./run_app.sh
 ```
 
