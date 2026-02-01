@@ -1,0 +1,17 @@
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/framio_icon.png"  # Your 1024x1024 logo
+  min_sdk_android: 21
+  remove_alpha_ios: true
+
+  # Adaptive icon for Android (modern devices)
+  adaptive_icon_background: "#4A90E2"  # Blue from your logo
+  adaptive_icon_foreground: "assets/icon/framio_icon.png"
+
+  # iOS specific
+  ios_content_mode: "scaleAspectFit"
+
+  # Platform specific naming
+  android_icon_name: "ic_launcher"
+  ios_icon_name: "AppIcon"

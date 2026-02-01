@@ -1,5 +1,5 @@
-name: video_screenshot_app
-description: A simple cross-platform app to capture video frames as JPG images
+name: framio
+description: Professional video frame editor - Extract, edit and share video frames with filters and batch export
 publish_to: 'none'
 
 version: 1.0.0+1
@@ -39,6 +39,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^3.0.0
+  flutter_launcher_icons: ^0.14.4
 
 flutter:
   uses-material-design: true
